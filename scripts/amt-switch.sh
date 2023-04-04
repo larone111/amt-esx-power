@@ -28,6 +28,13 @@ if [ -n "$1" ] && [ -n "$2" ]  && [ -n "$3" ] && [ -n "$4" ]; then
     then
       /etc/webhook/scripts/meshcmd AmtPower --powercycle --host $host --user $user --pass  $password --tls | jq --raw-input 'split("\n") | map_values(select(.) | capture("(?<state>(.+))"))'
       exit 0
+  elif [[ $function == "vm-host-off" ]]
+    then
+      /usr/bin/powershell/pwsh -Command "Import-Module VMware.VimAutomation.Core
+      Set-PowerCLIConfiguration -InvalidCertificateAction Ignore -ParticipateInCEIP \$false -Confirm:\$false
+      \$esx=Connect-VIServer -Server $host -Protocol https -User $user -Password $password
+      Stop-VMHost -VMHost $host -force -Confirm:\$false"
+      exit 0
   else
     echo  "$function is an unrecognised argument"  | jq --raw-input 'split("\n") | map_values(select(.) | capture("(?<state>(.+))"))'
     exit 1
