@@ -30,6 +30,7 @@ if [ -n "$1" ] && [ -n "$2" ]  && [ -n "$3" ] && [ -n "$4" ]; then
       exit 0
   elif [[ $function == "vm-host-off" ]]
     then
+      export HOME=/home/pi/
       /usr/bin/powershell/pwsh -Command "Import-Module VMware.VimAutomation.Core
       Set-PowerCLIConfiguration -InvalidCertificateAction Ignore -ParticipateInCEIP \$false -Confirm:\$false
       \$esx=Connect-VIServer -Server $host -Protocol https -User $user -Password $password
