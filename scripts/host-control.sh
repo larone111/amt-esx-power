@@ -1,6 +1,8 @@
 #!/bin/bash
-
 # Some characters such as + will be replaced with spaces by webhook, so choose special characters carefully. Do not use + ? &.
+
+# PowerCLI will not work if no hoe directory has been exported
+export HOME=/home/pi/
 
 if [ -n "$1" ] && [ -n "$2" ]  && [ -n "$3" ] && [ -n "$4" ]; then
   function=$1
@@ -30,11 +32,11 @@ if [ -n "$1" ] && [ -n "$2" ]  && [ -n "$3" ] && [ -n "$4" ]; then
       exit 0
   elif [[ $function == "vm-host-off" ]]
     then
-      export HOME=/home/pi/
+      # Powershell variables need to be escaped
       /usr/bin/powershell/pwsh -Command "Import-Module VMware.VimAutomation.Core
       Set-PowerCLIConfiguration -InvalidCertificateAction Ignore -ParticipateInCEIP \$false -Confirm:\$false
       \$esx=Connect-VIServer -Server $host -Protocol https -User $user -Password $password
-      Stop-VMHost -VMHost $host -force -Confirm:\$false"
+      Stop-VMHost -VMHost $host -RunAsync -force -Confirm:\$false -WhatIf"
       exit 0
   else
     echo  "$function is an unrecognised argument"  | jq --raw-input 'split("\n") | map_values(select(.) | capture("(?<state>(.+))"))'
