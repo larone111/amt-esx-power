@@ -1,7 +1,14 @@
 #!/bin/bash
+
+# This script will perform simple tasks on AMT hosts using meshcmd, or also on esxi hosts with powercli.
+# It will return the result as json. This is useful for tools like webhook.
+# Call this script with parameters in this order:
+# host-control.sh <function> <username> <password> <host>
+# <function> can be one of 'status', 'on', 'off', 'reset', 'cycle', 'vm-host-off'
+
 # Some characters such as + will be replaced with spaces by webhook, so choose special characters carefully. Do not use + ? &.
 
-# PowerCLI will not work if no hoe directory has been exported
+# export a HOME directory, otherwise PowerCLI will not work
 export HOME=/home/pi/
 
 if [ -n "$1" ] && [ -n "$2" ]  && [ -n "$3" ] && [ -n "$4" ]; then
@@ -47,7 +54,3 @@ else
   echo "Insufficient parameters supplied."  | jq --raw-input 'split("\n") | map_values(select(.) | capture("(?<state>(.+))"))'
   exit 1
 fi
-
-
-
-
