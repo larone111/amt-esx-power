@@ -6,9 +6,9 @@ from pyVmomi import vim
 from pyVim import connect
 import amt.client as amt
 
-def execute_amt_cmd(function, host, mesh_user, mesh_password):
+def execute_amt_cmd(function, host, amt_user, amt_password):
     try:
-        amtclient = amt.Client(host, username=mesh_user, password=mesh_password)
+        amtclient = amt.Client(host, username=amt_user, password=amt_password)
         if function == "status":
             result = amtclient.power_status()
         elif function in ["on", "reset", "off", "cycle"]:
@@ -30,7 +30,7 @@ def execute_amt_cmd(function, host, mesh_user, mesh_password):
         raise RuntimeError(f"Error connecting to Intel AMT: {str(e)}")
 
 def wait_for_task(task):
-    """Waits for a vSphere task to complete."""
+    # Waits for a vSphere task to complete
     while task.info.state not in [vim.TaskInfo.State.success, vim.TaskInfo.State.error]:
         pass
     return task.info.state
@@ -80,8 +80,8 @@ def shutdown_esxi_host(host, username, password):
 if len(sys.argv) == 7:
     function = sys.argv[1]
     host = sys.argv[2]
-    mesh_user = sys.argv[3]
-    mesh_password = sys.argv[4]
+    amt_user = sys.argv[3]
+    amt_password = sys.argv[4]
     esx_user = sys.argv[5]
     esx_password = sys.argv[6]
 
@@ -90,7 +90,7 @@ if len(sys.argv) == 7:
             result = shutdown_esxi_host(host, esx_user, esx_password)
             print(json.dumps(result))
         else:
-            result = execute_amt_cmd(function, host, mesh_user, mesh_password)
+            result = execute_amt_cmd(function, host, amt_user, amt_password)
             print(json.dumps(result))
     except Exception as e:
         print(str(e))
