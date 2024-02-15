@@ -56,25 +56,25 @@ def shutdown_esxi_host(host, username, password):
         view.Destroy()
 
         if not host_system:
-            print("No ESXi host found.")
+            print(f"Error: No ESXi host found.", file=sys.stderr)
             raise SystemError(f"No ESXi host found.")
 
         # Shut down the host
         task = host_system.ShutdownHost_Task(force=True)
-        print("Shutting down ESXi host. This may take some time...")
+        print(f"Info: Shutting down ESXi host. This may take some time...", file=sys.stdout)
 
         # Wait for the task to complete
         task_result = wait_for_task(task)
         if task_result == vim.TaskInfo.State.success:
             return({"success": "ESXi host successfully shut down."})
         else:
-            print("Failed to shut down ESXi host.")
+            print(f"Error: Failed to shut down ESXi host.", file=sys.stderr)
             raise SystemError(f"Failed to shut down ESXi host")
 
     except SystemError as e:
         raise SystemError({str(e)})
     except Exception as e:
-        print(f"Error: {str(e)}")
+        print(f"Error: {e}", file=sys.stderr)
         raise RuntimeError(f"Error shutting down ESXi host: {str(e)}")
 
 if len(sys.argv) == 7:
@@ -93,8 +93,8 @@ if len(sys.argv) == 7:
             result = execute_amt_cmd(function, host, amt_user, amt_password)
             print(json.dumps(result))
     except Exception as e:
-        print(str(e))
+        print(f"Error: {e}", file=sys.stderr)
         sys.exit(1)
 else:
-    print("Insufficient parameters supplied.")
+    print(f"Error: Insufficient parameters supplied.", file=sys.stderr)
     sys.exit(1)
