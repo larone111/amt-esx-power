@@ -1,5 +1,5 @@
 # Use the official Ubuntu base image
-FROM arm64v8/ubuntu:22.04
+FROM ubuntu:22.04
 
 # Set the working directory
 WORKDIR /app
@@ -8,7 +8,7 @@ WORKDIR /app
 COPY app/ /app
 
 # Update packages
-RUN apt-get update -y
+RUN apt-get update
 
 # install webhook
 RUN apt-get install -y webhook
