@@ -8,7 +8,7 @@ WORKDIR /app
 COPY app/ /app
 
 # Update packages
-# RUN apt-get update
+RUN apt-get update -y
 
 # install webhook
 RUN apt-get install -y webhook
