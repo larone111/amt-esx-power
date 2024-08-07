@@ -15,7 +15,7 @@ RUN apt-get install -y webhook
 
 # Install Python and necessary dependencies for your Python application
 RUN apt-get install -y python3 python3-pip
-RUN pip3 install -r requirements.txt
+RUN pip3 install -r requirements.txt --break-system-packages
 
 # Command to run your Ubuntu application
 CMD ["/usr/bin/webhook", "-nopanic", "-hooks", "/app/webhook.conf", "-hotreload" ,"-verbose"]
