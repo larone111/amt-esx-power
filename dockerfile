@@ -22,3 +22,5 @@ CMD ["/usr/bin/webhook", "-nopanic", "-hooks", "/app/webhook.conf", "-hotreload"
 
 # Expose any necessary ports for your applications
 EXPOSE 9000
+
+LABEL org.opencontainers.image.source https://github.com/domb84/amt-esx-power
