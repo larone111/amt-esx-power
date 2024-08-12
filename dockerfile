@@ -1,5 +1,5 @@
 # Use the official Ubuntu base image
-FROM amd64/ubuntu:24.04
+FROM arm64v8/ubuntu:24.04
 
 # Set the working directory
 WORKDIR /app
