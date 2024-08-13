@@ -24,3 +24,5 @@ CMD ["/usr/bin/webhook", "-nopanic", "-hooks", "/app/webhook.conf", "-hotreload"
 EXPOSE 9000
 
 LABEL org.opencontainers.image.source https://github.com/larone111/amt-esx-power
+
+LABEL org.opencontainers.image.description Simple container for Home Assistant allowing you to start or stop an Intel AMT based host. It will also cleanly shut down an ESXi host.
